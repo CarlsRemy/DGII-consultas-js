@@ -1,0 +1,34 @@
+{
+  "name": "dgii-consultas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/ncf.js",
+  "scripts": {
+    "test": "mocha test/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlsRemy/DGII-consultas-js.git"
+  },
+  "keywords": [
+    "DGII",
+    "E-NCF",
+    "NCF",
+    "RNC",
+    "Republica Dominicana"
+  ],
+  "author": "Carlos Ismael .Y .R",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CarlsRemy/DGII-consultas-js/issues"
+  },
+  "homepage": "https://github.com/CarlsRemy/DGII-consultas-js#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "soap": "^1.0.3"
+  },
+  "devDependencies": {
+    "chai": "4.3.8",
+    "mocha": "^10.4.0"
+  }
+}
