@@ -328,4 +328,93 @@ const parseRazonHTML2 = (html = "")=>{
 	}
 	return results;
 }
-module.exports = { consultRNCBySOAP, consultRNC, consultRNCBusinessName, consultRNCV2, consultRNCBusinessNameV2}
+
+
+const Api4_Url = "https://www.dgii.gov.do/app/WebApps/ConsultasWeb/consultas/ciudadanos.aspx";
+
+const Api3_Url = "https://dgii.gov.do/app/WebApps/ConsultasWeb2/ConsultasWeb/consultas/ciudadanos.aspx";
+const Api3_Data = {
+ctl00$smMain: "ctl00$cphMain$upBusqueda|ctl00$cphMain$btnBuscarCedula",
+ctl00$cphMain$txtCedula: "",
+__EVENTTARGET: "",
+__EVENTARGUMENT: "",
+__VIEWSTATE: "",
+__VIEWSTATEGENERATOR: "C8A53969",
+__EVENTVALIDATION: "",
+__ASYNCPOST: true,
+ctl00$cphMain$btnBuscarCedula: "Buscar"
+}
+
+
+const consultCiudadanos = (rnc = "") => {
+	return new Promise(async (resolve, reject) => {
+		rnc = rnc.toLowerCase();
+
+		if (rnc == "rnc" && !rncIsvalid(value)) {
+			reject({ error: "RNC inválido" });
+		}
+
+		const viewState = "/wEPDwUKLTE4NTE1MjQ5MQ9kFgJmD2QWAgIBD2QWAgIDD2QWAmYPZBYCAgEPZBYCAgMPFgIeB1Zpc2libGVnFgQCAQ8WBB4JaW5uZXJodG1sBSpFbCBSTkMgcXVlIGludGVudGEgY29uc3VsdGFyIG5vIGVzIHbDoWxpZG8fAGdkAgMPFgIfAGgWAgIBDzwrAA8AZBgBBR9jdGwwMCRjcGhNYWluJGR2UmVzdWx0YWRvQ2VkdWxhD2dk99s0FjM3JBQW1BurRRU5GH94Egc="
+		const eventValidation = "/wEWAwKojcafCAKpmY77CQLhjvSgAU3qBTPkac4x6wjhHbLhxxzjDrBr" 
+
+		Api3_Data.__VIEWSTATE = viewState;
+		Api3_Data.__EVENTVALIDATION = eventValidation;
+		Api3_Data['ctl00$cphMain$txtCedula'] = rnc;
+
+		const data = new URLSearchParams(Api3_Data);
+		const response = await fetch(Api4_Url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36'
+			},
+			body: data
+		});
+
+		if (!response.ok) {
+			reject({ error: `HTTP error! status: ${response.status}` });
+		}
+
+		const resText = await response.text();
+		const results =  parseHTML2(resText)
+		resolve(results);
+	});
+}
+
+const consultCiudadanosV2 = (rnc = "") => {
+	return new Promise(async (resolve, reject) => {
+		rnc = rnc.toLowerCase();
+
+		if (rnc == "rnc" && !rncIsvalid(value)) {
+			reject({ error: "RNC inválido" });
+		}
+
+		const viewState = "INBOPhFTWza2+0135J7r2u2PE8yqzRvCc2euJq0jXM/nibpkcKdcGTsgVFInaRQYG3q623lxgmNJTc8Zenqd732featAv+6xaGECzv/rSAd1NL8uHNkGlj+ynuIcXHqk9ghizcuFWZ5hnf5e7pkSAfduinDwt2443M4GDdlCMMb+RHBuYdYNsr3sZ4ZR8ioz9jRG5uTv7z4aAuaQK7GBdYL20TOsFvr3xu5cOw2/UbVL1RDMduAfMFGJOE9eTw+2NG4yOIVplaH7wVsNG2UyiUuPZfKh8gUGItiI18PMZ4pgUj2tsLcnei02FjVTnNlkUVi1rpeaAvVKCLtj6o5VvKAWYANdOYwIhuGNUJ/24MWIDRC7zKFvn2Ysg5Pt0FF23Eepe4HPycH2PXUgWzSwW8mVesU="
+		const eventValidation = "BY9Sp0yI3eq0nrdkX/evlB6WRkFN4c0BNzNx7WxZsOPXY47RWUV3t6ZzeTJJt3iMSXAqTavMMWTWQ8+Gm9TyhCi9iWi7QhNNS7K6++85tFpB3yazSUA2GJRw8ElHUHDVu/bddheieCMyH+sRKoSy4A8tzCWaaaIm0corZndU0xlLDlMN"
+
+		Api3_Data.__VIEWSTATE = viewState;
+		Api3_Data.__EVENTVALIDATION = eventValidation;
+		Api3_Data['ctl00$cphMain$txtCedula'] = rnc;
+
+		const data = new URLSearchParams(Api3_Data);
+		const response = await fetch(Api3_Url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.0.0 Safari/537.36'
+			},
+			body: data
+		});
+
+		if (!response.ok) {
+			reject({ error: `HTTP error! status: ${response.status}` });
+		}
+
+		const resText = await response.text();
+		const results =  parseHTML2(resText)
+		resolve(results);
+	});
+}
+
+
+module.exports = { consultRNCBySOAP, consultRNC, consultRNCBusinessName, consultRNCV2, consultRNCBusinessNameV2, consultCiudadanos}

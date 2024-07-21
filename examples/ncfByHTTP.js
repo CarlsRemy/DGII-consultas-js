@@ -42,6 +42,7 @@ const consultNCF = async (rnc = "", ncf = "") => {
 			__ASYNCPOST: true,
 			ctl00$cphMain$btnConsultar: "Buscar"
 		});
+		console.log(data.toString(), "j")
 
 		try {
 			const response = await fetch(url, {
@@ -85,8 +86,8 @@ const parseHTML = (html = "") => {
 }
 
 
-const consultNCF1 = await consultNCF("401052611","B0100000258")
-const consultNCF2 = await consultNCF("403012656","B0100000258")
+const consultNCF1 = consultNCF("401052611","B0100000258")
+const consultNCF2 = consultNCF("403012656","B0100000258")
 
 console.log(consultNCF1)
 console.log(consultNCF2)
